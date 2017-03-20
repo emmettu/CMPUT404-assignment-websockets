@@ -35,7 +35,7 @@ var context = canvas.getContext("2d");
 var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 var wscounter = 0;
-var colors = ["blue", "orange"];
+var colors = ["green", "red"];
 var socket;
 
 function debug(str) {
@@ -81,7 +81,7 @@ function prepEntity(entity) {
 function clearFrame() {
     with(context) {
 	moveTo(0,0);
-	fillStyle = "#009F6B";
+	fillStyle = "#ACE1AF";
 	fillRect(0,0,W,H);
     }
 
@@ -141,7 +141,7 @@ var counter = 0;
 function addEntityWithoutName(data) {
     var name = "X"+(counter++) % 100;
     if (data.ellipse) {
-        data["rotation"] = counter % 360;
+        data["rotation"] = (counter % 360) * (Math.PI / 180);
         data["colour"] = colors[counter % colors.length];
     }
     addEntity(name,data);
