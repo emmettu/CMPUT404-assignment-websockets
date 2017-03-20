@@ -67,8 +67,7 @@ subscribers = []
 def set_listener(entity, data):
     ''' do something with the update ! '''
     message = {
-        "entity": entity,
-        "data": data
+        entity: data
     }
     message = json.dumps(message)
     for s in subscribers:
@@ -95,11 +94,10 @@ def read_ws(ws, client):
 
         if msg is not None:
             packet = json.loads(msg)
-            entity = packet["entity"]
-            data = packet["data"]
 
-            for k, v in data.items():
-                myWorld.update(entity, k, v)
+            entity, data = packet.items()[0]
+
+            myWorld.set(entity, data)
         else:
             break
 

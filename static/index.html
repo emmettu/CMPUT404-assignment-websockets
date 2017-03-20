@@ -11,8 +11,7 @@
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
         You may obtain a copy of the License at
-        
-            http://www.apache.org/licenses/LICENSE-2.0
+        http://www.apache.org/licenses/LICENSE-2.0
         
         Unless required by applicable law or agreed to in writing, software
         distributed under the License is distributed on an "AS IS" BASIS,
@@ -122,11 +121,8 @@ function getPosition(e) {
 }
 
 function addEntity(entity, data) {
-    world[entity] = data;
-    message = {
-	"entity": entity,
-	"data": data
-    };
+    message = {};
+    message[entity] = data;
     socket.send(JSON.stringify(message));
     drawNextFrame(); // (but should we?)
     //XXX: Send a XHTML Request that updates the entity you just modified!
@@ -272,14 +268,11 @@ function wsSetup() {
         try {
             debug("WebSocket Recv:" + msg.data);
             //XXX: TODO What are you going to do here?
-            if (msg.data) {
-                console.log("incoming message :D!")
-                message = JSON.parse(msg.data);
-                var entity = message["entity"];
-                var data = message["data"];
-                world[entity] = data;
-                drawNextFrame();
-	    }
+            var message = JSON.parse(msg.data);
+            for (entity in message) {
+                world[entity] = message[entity];
+            }
+            drawNextFrame();
         } catch (e) {
             alert("socket on message: " + e);
         }
