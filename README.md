@@ -24,6 +24,8 @@ canvas ellipse: https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingCon
 
 gevent Queue:   https://github.com/abramhindle/WebSocketsExamples/blob/master/chat.py
 
+Fabulous shades of green: https://en.wikipedia.org/wiki/Shades_of_green#Green_.28CMYK.29_.28pigment_green.29
+
 Contributors / Licensing
 ========================
 
