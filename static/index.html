@@ -35,6 +35,7 @@ var context = canvas.getContext("2d");
 var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 var wscounter = 0;
+var colors = ["blue", "orange"];
 var socket;
 
 function debug(str) {
@@ -48,7 +49,7 @@ world = {};
 //XXX: TODO Make this prettier!
 function drawCircle(context,entity) {
     with(context) {
-        beginPath();                
+        beginPath();
         lineWidth = 3;
         var x = entity["x"];
         var y = entity["y"];
@@ -80,7 +81,7 @@ function prepEntity(entity) {
 function clearFrame() {
     with(context) {
 	moveTo(0,0);
-	fillStyle = "#000";
+	fillStyle = "#009F6B";
 	fillRect(0,0,W,H);
     }
 
@@ -138,9 +139,10 @@ function addEntity(entity, data) {
 }
 var counter = 0;
 function addEntityWithoutName(data) {
-    var name = "X"+(counter++)%100;
+    var name = "X"+(counter++) % 100;
     if (data.ellipse) {
         data["rotation"] = counter % 360;
+        data["colour"] = colors[counter % colors.length];
     }
     addEntity(name,data);
 }
