@@ -20,6 +20,8 @@
         limitations under the License.
     "/>
     <script src="json2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
   </head> 
   <body bgcolor="white" height="100%" width="100%"> 
     <div id="debug"></div>
@@ -50,11 +52,18 @@ function drawCircle(context,entity) {
         lineWidth = 3;
         var x = entity["x"];
         var y = entity["y"];
+        var size = entity["radius"];
+        var rotation = entity["rotation"];
         //moveTo(x,y);
         fillStyle = entity["colour"];
         strokeStyle = fillStyle;
-        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
-        stroke();                                
+        if (entity.ellipse) {
+            ellipse(x, y, size, size / 2, rotation, 0, 360);
+        }
+        else {
+            arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
+        }
+        stroke();
     }
 }
 
@@ -130,6 +139,9 @@ function addEntity(entity, data) {
 var counter = 0;
 function addEntityWithoutName(data) {
     var name = "X"+(counter++)%100;
+    if (data.ellipse) {
+        data["rotation"] = counter % 360;
+    }
     addEntity(name,data);
 }
 
@@ -232,16 +244,15 @@ mouse = (function() {
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
+        addEntityWithoutName({'x':x,'y':y,'colour':'red', 'radius':50});
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'red'});
+    addEntityWithoutName({'x':x,'y':y,'colour':'yellow','radius':50});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'green',
-                          'radius':10});
+    addEntityWithoutName({'x':x,'y':y,'colour':'orange', 'ellipse':true, 'radius':10});
 });
 
 
@@ -255,11 +266,10 @@ function wsSetup() {
     socket = new WebSocket(url);
     socket.onopen = function() {
     //XXX: TODO What are you going to do here?
-        var req = new XMLHttpRequest();
-        req.open("GET", "/world", false);
-        req.send(null);
-        world = JSON.parse(req.responseText);
-        drawNextFrame();
+        $.get('/world', function(response) {
+            world = JSON.parse(response);
+            drawNextFrame();
+        });
     };
     socket.onerror = function(msg) {
         debug("WebSocket Error:" + msg.data);
