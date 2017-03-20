@@ -19,7 +19,9 @@ pip install gunicorn
 Citations
 =========
 jquery get:     https://www.w3schools.com/jquery/jquery_ajax_get_post.asp
+
 canvas ellipse: https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D/ellipse
+
 gevent Queue:   https://github.com/abramhindle/WebSocketsExamples/blob/master/chat.py
 
 Contributors / Licensing
